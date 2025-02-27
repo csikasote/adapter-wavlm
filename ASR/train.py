@@ -1,5 +1,6 @@
 from pprint import pprint
-from datasets import load_metric
+#from datasets import load_metric
+from evaluate import load
 import torch
 import numpy as np
 import wandb
@@ -295,11 +296,11 @@ def main():
             return steps[epoch]
         scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=func)
 
-    metric = load_metric('wer')
+    metric = load('wer')
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size['train'], collate_fn=collator, shuffle=True, num_workers=12, pin_memory=True)
     val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size['val'], collate_fn=collator, shuffle=False, num_workers=12, pin_memory=True)
     dataloaders_dict = {'train':train_loader, 'val':val_loader}
-    model = train_model(model, processor, dataloaders_dict, optimizer, scheduler, metric, num_epochs, report_wandb=True, val_interval=100)
+    model = train_model(model, processor, dataloaders_dict, optimizer, scheduler, metric, num_epochs, report_wandb=False, val_interval=100)
     if args.save_model:
         torch.save(model.module.state_dict(), args.run_name+'.pth')
 

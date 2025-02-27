@@ -38,6 +38,8 @@ class LibriSpeechDataset(object):
         
         with self.processor.as_target_processor():
             labels = self.processor(text).input_ids
+            #print(labels)
+        #labels = self.processor(text=text).input_ids
         sample = {'input_values': array,  
                   'labels': labels,
                   'files': file}

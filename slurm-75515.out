@@ -1,0 +1,5 @@
+ 
+---------- Step 0: Installing libraries  --------------
+ 
+---------- Step 1: Running model ----------------------
+python: can't open file '/home/skscla001/train.py': [Errno 2] No such file or directory
