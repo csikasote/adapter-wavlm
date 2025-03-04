@@ -1,6 +1,6 @@
 from pprint import pprint
 #from datasets import load_metric
-from evaluate import load
+import evaluate
 import torch
 import numpy as np
 import wandb
@@ -8,6 +8,8 @@ import sys, os
 sys.path.append(os.pardir)
 import argparse
 from distutils.util import strtobool
+#import torchaudio
+#torchaudio.set_audio_backend("sox_io")
 
 from transformers import WavLMForCTC # Original WavLMModel
 from modeling import AdaWavLMForCTC # WavLMModel with Adapter
@@ -38,7 +40,9 @@ def main():
     parser.add_argument('--use_adapter_attn', type=strtobool, default=True)
     parser.add_argument('--adapter_init_std', type=float, default=1e-3)
     parser.add_argument('--ladapter_init_std', type=float, default=1e-3)
-    
+    parser.add_argument('--save_model', type=strtobool, default=False)
+
+    parser.add_argument('--use_steplr', type=strtobool, default=True) 
     parser.add_argument('--classifier_lr', type=float, default=1e-3)
     parser.add_argument('--encoder_lr', type=float, default=1e-4)
     parser.add_argument('--ladapter_lr', type=float, default=1e-3)
@@ -296,7 +300,7 @@ def main():
             return steps[epoch]
         scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=func)
 
-    metric = load('wer')
+    metric = evaluate.load('wer')
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size['train'], collate_fn=collator, shuffle=True, num_workers=12, pin_memory=True)
     val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size['val'], collate_fn=collator, shuffle=False, num_workers=12, pin_memory=True)
     dataloaders_dict = {'train':train_loader, 'val':val_loader}

@@ -5,6 +5,10 @@ import numpy as np
 import pandas as pd
 import random
 import wandb
+import torchaudio
+torchaudio.set_audio_backend("sox_io")
+print(torch.__version__)
+print(torchaudio.__version__)
 
 from tqdm.notebook import tqdm
 from transformers import Wav2Vec2Processor
@@ -36,10 +40,10 @@ class LibriSpeechDataset(object):
         text = data['wrd']
         file = data['wav']
         
-        with self.processor.as_target_processor():
-            labels = self.processor(text).input_ids
+        #with self.processor.as_target_processor():
+        #    labels = self.processor(text).input_ids
             #print(labels)
-        #labels = self.processor(text=text).input_ids
+        labels = self.processor(text=text).input_ids
         sample = {'input_values': array,  
                   'labels': labels,
                   'files': file}
@@ -104,8 +108,8 @@ class DataCollatorCTCWithPadding:
             pad_to_multiple_of=self.pad_to_multiple_of,
             return_tensors="pt",
         )
-        with self.processor.as_target_processor():
-            labels_batch = self.processor.pad(
+        #with self.processor.as_target_processor():
+        labels_batch = self.processor.tokenizer.pad(
                 label_features,
                 padding=self.padding,
                 max_length=self.max_length_labels,

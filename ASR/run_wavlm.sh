@@ -12,7 +12,7 @@
 #SBATCH --time=48:00:00
 
 # A sensible name for your job, try to keep it short
-#SBATCH --job-name="adapter_wavlm"
+#SBATCH --job-name="wavlm"
 
 #Modify the lines below for email alerts. Valid type values are NONE, BEGIN, END, FAIL, REQUEUE, ALL 
 #SBATCH --mail-user=skscla001@myuct.ac.za
@@ -48,26 +48,41 @@ echo " "
 module load python/miniconda3-py3.9
 #conda create -y -n $env_name
 source activate $env_name
-#pip install --user -U transformers --ignore-installed
-#pip install --user datasets torchaudio torch torchvision torchaudio librosa huggingface_hub jiwer --ignore-installed
-#pip install --user numpy==1.23.1
-#pip install --user pandas==1.4.3
-#pip install --user matplotlib==3.1.0
-#pip install --user torch==1.12.0
-#pip install --user torchaudio==0.12.0
-#pip install --user datasets==1.18.3
-#pip install --user transformers==4.20.1
-#pip install --user speechbrain==0.5.11
-#pip install --user tqdm==4.64.0
-#pip install --user wandb==0.12.21
-#pip install --user ipywidgets
+#pip install --user numpy==1.23.1 --ignore-installed
+#pip install --user pandas==1.4.3 --ignore-installed
+#pip install --user matplotlib==3.1.0 --ignore-installed
+#pip install --user torch==1.12.0 --ignore-installed
+#pip install --user torchaudio==0.12.0 --ignore-installed
+#pip install --user datasets==1.18.3 --ignore-installed
+#pip install --user transformers==4.20.1 --ignore-instaled
+#pip install --user speechbrain==0.5.11 --ignore-installed
+#pip install --user tqdm==4.64.0 --ignore-installed
+#pip install --user wandb==0.12.21 --ignore-installed
+#pip install --user ipywidgets --ignore-installed
 #pip install --user -U datasets
-#pip install --user evaluate --ignore-installed
+#pip install --user evaluate
 #pip install --user jiwer --ignore-installed
-#pip install --user numpy==1.19.5 
+#pip install --user numpy==1.19.5 --ignore-installed
+#pip install --user -U transformers
+#pip install --user torch==2.0.1
+#pip install --user -U transformers
 
+
+#pip install --user torch torchvision torchaudio transformers datasets huggingface_hub speechbrain evaluate jiwer
+#pip install --user wandb
+#pip install --user tqdm
+#pip install --user ipywidgets
+#pip install --user librosa
 echo "---------- Step 1: Running model ----------------------"
-python train.py --train_eadapter false
+python train.py --run_name="sample_run" \
+	--train_encada="True" \
+	--eadapter_lr="1e-5" \
+	--classifier_lr="1e-3" \
+	--use_adapter_attn="True" \
+	--use_steplr="True" \
+	--save_model="True"
+echo " "
+echo "---------- Step 1: Processing complete  ----------------------"
 
 conda deactivate
 exit
