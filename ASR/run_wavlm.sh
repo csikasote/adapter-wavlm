@@ -48,31 +48,14 @@ echo " "
 module load python/miniconda3-py3.9
 #conda create -y -n $env_name
 source activate $env_name
-#pip install --user numpy==1.23.1 --ignore-installed
-#pip install --user pandas==1.4.3 --ignore-installed
-#pip install --user matplotlib==3.1.0 --ignore-installed
-#pip install --user torch==1.12.0 --ignore-installed
-#pip install --user torchaudio==0.12.0 --ignore-installed
-#pip install --user datasets==1.18.3 --ignore-installed
-#pip install --user transformers==4.20.1 --ignore-instaled
-#pip install --user speechbrain==0.5.11 --ignore-installed
-#pip install --user tqdm==4.64.0 --ignore-installed
-#pip install --user wandb==0.12.21 --ignore-installed
-#pip install --user ipywidgets --ignore-installed
-#pip install --user -U datasets
-#pip install --user evaluate
-#pip install --user jiwer --ignore-installed
-#pip install --user numpy==1.19.5 --ignore-installed
-#pip install --user -U transformers
-#pip install --user torch==2.0.1
-#pip install --user -U transformers
-
-
 #pip install --user torch torchvision torchaudio transformers datasets huggingface_hub speechbrain evaluate jiwer
 #pip install --user wandb
 #pip install --user tqdm
 #pip install --user ipywidgets
 #pip install --user librosa
+#pip install --user transformers==4.20.1
+#pip install --user numpy==1.23.1
+
 echo "---------- Step 1: Running model ----------------------"
 python train.py --run_name="sample_run" \
 	--train_encada="True" \

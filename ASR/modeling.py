@@ -26,8 +26,8 @@ from transformers.models.wavlm.modeling_wavlm import (
 from transformers.modeling_utils import PreTrainedModel
 from transformers.modeling_outputs import BaseModelOutput
 from transformers.activations import ACT2FN
-#from transformers.deepspeed import is_deepspeed_zero3_enabled
-from transformers.integrations.deepspeed import is_deepspeed_zero3_enabled
+from transformers.deepspeed import is_deepspeed_zero3_enabled
+#from transformers.integrations.deepspeed import is_deepspeed_zero3_enabled
 from transformers.utils import ModelOutput
 from torch.nn import CrossEntropyLoss
 from typing import List, Tuple, Union, Optional

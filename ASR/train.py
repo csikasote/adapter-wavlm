@@ -305,8 +305,14 @@ def main():
     val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size['val'], collate_fn=collator, shuffle=False, num_workers=12, pin_memory=True)
     dataloaders_dict = {'train':train_loader, 'val':val_loader}
     model = train_model(model, processor, dataloaders_dict, optimizer, scheduler, metric, num_epochs, report_wandb=False, val_interval=100)
+
     if args.save_model:
-        torch.save(model.module.state_dict(), args.run_name+'.pth')
+        # Save model properly whether DataParallel is used or not
+        if hasattr(model, "module"):
+            torch.save(model.module.state_dict(), args.run_name + ".pth")  # If wrapped in DataParallel
+        else:
+            torch.save(model.state_dict(), args.run_name + ".pth")  # If not wrapped
+        #torch.save(model.module.state_dict(), args.run_name+'.pth')
 
     if not args.train_encada and not args.train_encoder:
         weight = torch.nn.functional.softmax(model.module.wavlm.encoder.adapter_to_output_layer_weights.detach().cpu()).numpy()
